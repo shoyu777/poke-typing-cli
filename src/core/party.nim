@@ -1,16 +1,23 @@
 import std/httpclient
 import std/json
 import std/sequtils
+import std/strutils
+import utils
 
-type Pokemon = ref object
-  id: int
-  name: string
-  flavorText: string
-  textSize: int
+func sanitized(text: string): string =
+  # 改行削除、フレームのちょうど良い長さで折り返し記号「*」をつける
+  return text.replace("\n", "*").replace("é", "e")
 
-type Party = ref object
-  members: seq[Pokemon]
-proc newParty(): Party =
+type Pokemon* = ref object
+  id*: int
+  name*: string
+  flavorText*: string
+  textSize*: int
+
+type Party* = ref object
+  members*: seq[Pokemon]
+
+proc newParty*(): Party =
   new result
   let client = newHttpClient()
   for i in 1..6:
@@ -19,10 +26,6 @@ proc newParty(): Party =
     result.members.add(Pokemon(
       id: jsonNode["id"].getInt(),
       name: jsonNode["name"].getStr(),
-      flavorText: flavorText,
+      flavorText: flavorText.sanitized(),
       textSize: flavorText.len))
 
-let party = newParty()
-
-for i in party.members:
-  echo %i
