@@ -1,15 +1,16 @@
-import std/terminal
-import std/strutils
-import gamestatus
-import keycode
-import score
+import
+  std/terminal,
+  std/strutils,
+  model/gamestatus,
+  model/score,
+  util/constants
 
 const baseCursorPosX = 2
 const baseCursorPosY = 9
 const maxPartyCount = 6
 
 proc pureText(s: string): string =
-  return s.replace($KEYCODE.BG_GREEN, "").replace($KEYCODE.BG_RED, "").replace($KEYCODE.RESET, "")
+  return s.replace($COLORS.BG_GREEN, "").replace($COLORS.BG_RED, "").replace($COLORS.RESET, "")
 
 proc screenReset() =
   stdout.eraseScreen()
@@ -53,7 +54,7 @@ proc drawBottomLine(screenWidth: int = 60) =
 proc drawGameFlame*(gs: GameStatus, screenWidth: int = 60) =
   screenReset()
   drawTopLine(gs)
-  drawHeadLine(gs.currentPokeName)
+  drawHeadLine(gs.currentPokemonName)
   drawSeparator()
   drawTextLine(gs)
   drawSeparator()

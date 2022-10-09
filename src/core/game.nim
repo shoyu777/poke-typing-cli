@@ -2,9 +2,9 @@ import
   std/terminal,
   std/times,
   view,
-  gamestatus,
-  keycode,
-  score
+  model/gamestatus,
+  model/score,
+  util/constants
 
 proc gameOver(gs: GameStatus, score: Score) =
   if gs.isAllDefeated:
@@ -45,22 +45,22 @@ proc battleStart*() =
       else:
         if key == gs.currentTextForJudge[gs.cursor]:
           score.corrects += 1
-          gs.resultText.add($KEYCODE.BG_GREEN)
+          gs.resultText.add($COLORS.BG_GREEN)
           gs.internalResult.add("T")
         else:
           score.wrongs += 1
-          gs.resultText.add($KEYCODE.BG_RED)
+          gs.resultText.add($COLORS.BG_RED)
           gs.internalResult.add("F")
         if gs.currentText[gs.cursor] == '*':
-          gs.resultText.add(" " & $KEYCODE.RESET & '*')
+          gs.resultText.add(" " & $COLORS.RESET & '*')
           gs.wroteText.add("*")
         else:
-          gs.resultText.add(gs.currentText[gs.cursor] & $KEYCODE.RESET)
+          gs.resultText.add(gs.currentText[gs.cursor] & $COLORS.RESET)
           gs.wroteText.add(key)
         score.keypresses += 1
         gs.cursor = gs.cursor + 1
     if gs.cursor == gs.currentText.len:
-      score.defeated.add(gs.currentPokeName)
+      score.defeated.add(gs.currentPokemonName)
       gs.setNextPokemon()
     drawGameFlame(gs)
 

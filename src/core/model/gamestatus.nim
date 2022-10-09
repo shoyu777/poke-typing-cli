@@ -1,7 +1,9 @@
-import std/strutils
-import party
-import utils
-import std/times
+import
+  std/strutils,
+  std/times,
+  party,
+  pokemon,
+  ../util/utils
 
 type GameStatus* = ref object
   isCompleted*: bool
@@ -28,7 +30,7 @@ proc newGameStatus*(): GameStatus =
 
 proc currentText*(self: GameStatus): string =
   if self.remainingParty.members.present:
-    return self.remainingParty.members.first.flavorText
+    return self.remainingParty.members.first.flavorText()
   else:
     return ""
 
@@ -38,7 +40,7 @@ proc currentTextForJudge*(self: GameStatus): string =
   else:
     return ""
 
-proc currentPokeName*(self: GameStatus): string =
+proc currentPokemonName*(self: GameStatus): string =
   if self.remainingParty.members.present:
     return "No." & $self.remainingParty.members.first.id & " " & self.remainingParty.members.first.name
 
