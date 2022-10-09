@@ -13,3 +13,4 @@ bin           = @["poketyping"]
 # Dependencies
 
 requires "nim >= 1.6.8"
+requires "cligen >= 1.5.28"

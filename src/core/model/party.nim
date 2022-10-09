@@ -14,7 +14,7 @@ type Party* = ref object
 proc newParty*(n: int = 6, sub: string = ""): Party =
   new result
   let client = newHttpClient()
-  for i in 1..2:
+  for i in 1..n:
     let jsonNode = parseJson(client.getContent("https://pokeapi.co/api/v2/pokemon-species/" & $i))
     let flavorText: string = jsonNode["flavor_text_entries"].filterIt(it["language"]["name"].getStr() == "en" and it["version"]["name"].getStr() == "sword")[0]["flavor_text"].getStr()
     result.members.add(

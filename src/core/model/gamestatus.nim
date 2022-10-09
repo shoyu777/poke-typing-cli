@@ -16,14 +16,14 @@ type GameStatus* = ref object
   isStarted*: bool
   startedAt*: DateTime
 
-proc newGameStatus*(): GameStatus =
+proc newGameStatus*(n: int = 6, sub: string = ""): GameStatus =
   new result
   result.isCompleted = false
   result.wroteText = ""
   result.resultText = ""
   result.internalResult = ""
   result.cursor = 0
-  result.remainingParty = newParty()
+  result.remainingParty = newParty(n = n, sub = sub)
   result.initialremainingPartyCount = result.remainingParty.count
   result.isStarted = false
   result.startedAt = now()

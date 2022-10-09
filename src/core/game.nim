@@ -12,8 +12,8 @@ proc gameOver(gs: GameStatus, score: Score) =
     drawResultFlame(gs, score)
   quit()
 
-proc battleStart*() =
-  var gs = newGameStatus()
+proc battleStart*(n: int = 6, sub: string = "") =
+  var gs = newGameStatus(n = n, sub = sub)
   var score = new Score
   drawGameFlame(gs)
 
