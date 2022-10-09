@@ -1,13 +1,18 @@
+import std/strutils
 import party
 import utils
+import std/times
 
 type GameStatus* = ref object
   isCompleted*: bool
   wroteText*: string
   resultText*: string
   internalResult*: string
-  cursor*: int
-  party*: Party
+  cursor*: Natural
+  remainingParty*: Party
+  initialremainingPartyCount*: Natural
+  isStarted*: bool
+  startedAt*: DateTime
 
 proc newGameStatus*(): GameStatus =
   new result
@@ -16,23 +21,42 @@ proc newGameStatus*(): GameStatus =
   result.resultText = ""
   result.internalResult = ""
   result.cursor = 0
-  result.party = newParty()
+  result.remainingParty = newParty()
+  result.initialremainingPartyCount = result.remainingParty.count
+  result.isStarted = false
+  result.startedAt = now()
 
 proc currentText*(self: GameStatus): string =
-  if self.party.members.present:
-    return self.party.members.first.flavorText
+  if self.remainingParty.members.present:
+    return self.remainingParty.members.first.flavorText
+  else:
+    return ""
+
+proc currentTextForJudge*(self: GameStatus): string =
+  if self.remainingParty.members.present:
+    return self.remainingParty.members.first.flavorText.replace("*", " ")
   else:
     return ""
 
 proc currentPokeName*(self: GameStatus): string =
-  if self.party.members.present:
-    return "No." & $self.party.members.first.id & " " & self.party.members.first.name
+  if self.remainingParty.members.present:
+    return "No." & $self.remainingParty.members.first.id & " " & self.remainingParty.members.first.name
 
 proc setNextPokemon*(self: GameStatus) =
-  self.party.members = self.party.members.drop()
+  self.remainingParty.members = self.remainingParty.members.drop()
   self.cursor = 0
   self.resultText = ""
   self.wroteText = ""
   self.internalResult = ""
-  if self.party.members.len == 0:
-    self.isCompleted = true
+
+proc remainingPartyCount*(self: GameStatus): Natural =
+  return self.remainingParty.members.len
+
+func isAllDefeated*(self: GameStatus): bool =
+  return self.remainingPartyCount == 0
+
+proc elapsedSeconds*(self: GameStatus): int =
+  if self.isStarted:
+    return (now() - self.startedAt).inSeconds.int
+  else:
+    return 0
