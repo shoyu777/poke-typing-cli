@@ -30,7 +30,13 @@ proc newGameStatus*(n: int = 6, sub: string = ""): GameStatus =
 
 proc currentText*(self: GameStatus): string =
   if self.remainingParty.members.present:
-    return self.remainingParty.members.first.flavorText()
+    return self.remainingParty.members.first.flavorText
+  else:
+    return ""
+
+proc currentLocalText*(self: GameStatus): string =
+  if self.remainingParty.members.present:
+    return self.remainingParty.members.first.localFlavorText
   else:
     return ""
 
