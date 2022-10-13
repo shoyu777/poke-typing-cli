@@ -33,6 +33,11 @@ proc genRandomIds(count: int, maxRange: int): seq[int] =
   # for debugging
   # result = @[304]
 
+proc getLocalName(jsonNode: JsonNode, sub: string): string =
+  let localNames: seq[JsonNode] = jsonNode["names"].filterIt(it["language"]["name"].getStr() == sub)
+  if localNames.len > 0:
+    result = localNames[0]["name"].getStr()
+
 proc getFlavorTexts(jsonNode: JsonNode, sub: string): (string, string) =
   # 言語が最大のバージョンを探す
   var maxCount = 0
@@ -62,12 +67,12 @@ proc newParty*(n: int = 6, sub: string = ""): Party =
   let randIds: seq[int] = genRandomIds(count = n, maxRange = 905)
   for id in randIds:
     let jsonNode = parseJson(client.getContent("https://pokeapi.co/api/v2/pokemon-species/" & $id))
-    # let flavorText: string = jsonNode["flavor_text_entries"].filterIt(it["language"]["name"].getStr() == "en")[0]["flavor_text"].getStr()
     let (flavorText, localFlavorText) = jsonNode.getFlavorTexts(sub)
     result.members.add(
       newPokemon(
         id = jsonNode["id"].getInt(),
         name = jsonNode["name"].getStr(),
+        localName = jsonNode.getLocalName(sub),
         flavorText = flavorText.sanitize.wordWrap,
         localFlavorText = localFlavorText.replace("\n", "*")
       )

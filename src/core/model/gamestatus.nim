@@ -48,7 +48,10 @@ proc currentTextForJudge*(self: GameStatus): string =
 
 proc currentPokemonName*(self: GameStatus): string =
   if self.remainingParty.members.present:
-    return "No." & align($self.remainingParty.members.first.id, 4, '0') & " " & self.remainingParty.members.first.name
+    let no = "No." & align($self.remainingParty.members.first.id, 4, '0') & " "
+    let name = self.remainingParty.members.first.name
+    let localName = self.remainingParty.members.first.localName
+    return no & name & " (" & localName & ")"
 
 proc setNextPokemon*(self: GameStatus) =
   self.remainingParty.members = self.remainingParty.members.drop()

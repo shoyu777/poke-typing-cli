@@ -14,3 +14,18 @@ bin           = @["poketyping"]
 
 requires "nim >= 1.6.8"
 requires "cligen >= 1.5.28"
+requires "wcwidth >= 0.1.3"
+
+# tasks
+import strformat
+
+task archive, "Create archived assets":
+  let app = "poketyping"
+  let assets = &"{app}_{buildOS}"
+  let dir = &"dist/{assets}"
+  mkDir &"{dir}/bin"
+  cpFile &"bin/{app}", &"{dir}/bin/{app}"
+  cpFile "LICENSE", &"{dir}/LICENSE"
+  cpFile "README.md", &"{dir}/README.md"
+  withDir "dist":
+    exec &"tar czf {assets}.tar.gz {assets}"

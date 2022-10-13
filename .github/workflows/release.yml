@@ -1,0 +1,31 @@
+name: GitHub Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Install nim
+        run: |
+          export PATH=$HOME/.nimble/bin:$PATH
+          curl https://nim-lang.org/choosenim/init.sh -sSf > init.sh
+          sh init.sh -y
+          choosenim update stable
+      - name: Create release
+        run: |
+          export PATH=$HOME/.nimble/bin:$PATH
+          nimble build -d:release
+          nimble archive
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: "dist/poketyping_linux.tar.gz"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
