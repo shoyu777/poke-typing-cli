@@ -20,6 +20,7 @@ requires "wcwidth >= 0.1.3"
 import strformat
 
 task archive, "Create archived assets":
+  rmDir "dist"
   let app = "poketyping"
   let assets = &"{app}_{buildOS}"
   let dir = &"dist/{assets}"
@@ -27,5 +28,6 @@ task archive, "Create archived assets":
   cpFile &"bin/{app}", &"{dir}/bin/{app}"
   cpFile "LICENSE", &"{dir}/LICENSE"
   cpFile "README.md", &"{dir}/README.md"
+  exec &"chmod 755 {dir}/bin/{app}"
   withDir "dist":
     exec &"tar czf {assets}.tar.gz {assets}"

@@ -50,8 +50,11 @@ proc currentPokemonName*(self: GameStatus): string =
   if self.remainingParty.members.present:
     let no = "No." & align($self.remainingParty.members.first.id, 4, '0') & " "
     let name = self.remainingParty.members.first.name
-    let localName = self.remainingParty.members.first.localName
-    return no & name & " (" & localName & ")"
+    var localName = if self.remainingParty.members.first.localName != "":
+        " (" & self.remainingParty.members.first.localName & ")"
+      else:
+        ""
+    return no & name & localName
 
 proc setNextPokemon*(self: GameStatus) =
   self.remainingParty.members = self.remainingParty.members.drop()
