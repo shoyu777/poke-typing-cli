@@ -21,7 +21,7 @@ jobs:
       - name: Create release
         run: |
           export PATH=$HOME/.nimble/bin:$PATH
-          nimble build -d:release
+          nimble build -d:release -y
           nimble archive
       - name: Release
         uses: softprops/action-gh-release@v1
