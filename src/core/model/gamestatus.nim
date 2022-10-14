@@ -6,7 +6,6 @@ import
   ../util/utils
 
 type GameStatus* = ref object
-  isCompleted*: bool
   wroteText*: string
   resultText*: string
   internalResult*: string
@@ -18,7 +17,6 @@ type GameStatus* = ref object
 
 proc newGameStatus*(n: int = 6, sub: string = ""): GameStatus =
   new result
-  result.isCompleted = false
   result.wroteText = ""
   result.resultText = ""
   result.internalResult = ""

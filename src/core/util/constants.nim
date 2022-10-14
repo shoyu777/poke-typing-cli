@@ -12,7 +12,7 @@ type ERROR_MSGS* {.pure.} = enum
   ARG_ERR = "\n== Argument Error ==\n"
   NUM_ERR = "Num of Pokemon must be between 1 and 6."
 
-const replaceWords* = @[
+const REPLACE_WORDS* = @[
   ["\n", " "],
   ["\f", " "],
   ["POKéMON", "Pokemon"],
@@ -21,7 +21,7 @@ const replaceWords* = @[
   ["’", "'"]
 ]
 
-const pokemonVersions* = @[
+const POKEMON_VERSIONS* = @[
   "red",
   "blue",
   "yellow",

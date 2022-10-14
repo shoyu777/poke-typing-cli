@@ -9,7 +9,7 @@ import
 
 func sanitize(text: string): string =
   result = text
-  for word in replaceWords:
+  for word in REPLACE_WORDS:
     result = result.replace(word[0], word[1])
 
 func wordWrap(text: string, lineWidth: int = 70): string =
@@ -42,7 +42,7 @@ proc getFlavorTexts(jsonNode: JsonNode, sub: string): (string, string) =
   # 言語が最大のバージョンを探す
   var maxCount = 0
   var maxVersion = ""
-  for version in pokemonVersions:
+  for version in POKEMON_VERSIONS:
     let count = jsonNode["flavor_text_entries"].filterIt(it["version"]["name"].getStr() == version).len
     if count >= maxCount:
       maxCount = count
