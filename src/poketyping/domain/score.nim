@@ -5,7 +5,7 @@ type Score* = ref object
   wrongs: Natural
   keypresses: Natural
   seconds: Natural
-  defeatedPokemons*: seq[Pokemon]
+  defeatedPokemons: seq[Pokemon]
 
 proc corrects*(self: Score): Natural =
   return self.corrects
@@ -24,20 +24,18 @@ proc defeatedPokemons*(self: Score): seq[Pokemon] =
 
 proc incCorrests*(self: Score) =
   self.corrects += 1
+  self.keypresses += 1
 
 proc decCorrests*(self: Score) =
   self.corrects -= 1
+  self.keypresses -= 1
 
 proc incWrongs*(self: Score) =
   self.wrongs += 1
+  self.keypresses += 1
 
 proc decWrongs*(self: Score) =
   self.wrongs -= 1
-
-proc incKeypresses*(self: Score) =
-  self.keypresses += 1
-
-proc decKeypresses*(self: Score) =
   self.keypresses -= 1
 
 func accuracy*(self: Score): int =
