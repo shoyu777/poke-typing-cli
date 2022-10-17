@@ -75,13 +75,17 @@ proc elapsedSeconds*(self: GameState): int =
 proc isIgnoreKey(key: string): bool =
   return false # TODO: impl
 
-proc updateGameState*(self: GameState, key: string): GameState =
-  if isIgnoreKey(key): return self
+proc updateGameState*(self: GameState, key: string) =
+  if isIgnoreKey(key): return
+
+  if not self.isStarted:
+    self.isStarted = true
+    self.startedAt = now()
 
   case key:
   of $KEYCODE.CTRL_C, $KEYCODE.ESCAPE:
     self.isCanceled = true
-    return self
+    return
   of $KEYCODE.BACKSPACE:
     if self.wroteText.len > 0:
       if self.internalResult[^1] == 'T':
@@ -114,7 +118,3 @@ proc updateGameState*(self: GameState, key: string): GameState =
   if self.cursor == self.currentText.len:
     self.score.addDefeatedPokemon(self.remainingParty.first)
     self.setNextPokemon()
-
-  return self
-
-
