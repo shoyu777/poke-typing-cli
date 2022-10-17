@@ -1,3 +1,5 @@
+import std/strutils
+
 type Pokemon* = ref object
   id: int
   name: string
@@ -27,3 +29,11 @@ func flavorText*(self: Pokemon): string =
 
 func localFlavorText*(self: Pokemon): string =
   return self.localFlavorText
+
+func fullName*(self: Pokemon): string =
+  let no = "No." & align($self.id, 4, '0') & " "
+  var localName = if self.localName != "":
+      " (" & self.localName & ")"
+    else:
+      ""
+  result = no & self.name & localName

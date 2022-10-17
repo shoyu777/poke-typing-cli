@@ -7,26 +7,29 @@ type Score* = ref object
   seconds: Natural
   defeatedPokemons: seq[Pokemon]
 
-proc corrects*(self: Score): Natural =
+func corrects*(self: Score): Natural =
   return self.corrects
 
-proc wrongs*(self: Score): Natural =
+func wrongs*(self: Score): Natural =
   return self.wrongs
 
-proc keypresses*(self: Score): Natural =
+func keypresses*(self: Score): Natural =
   return self.keypresses
 
-proc seconds*(self: Score): Natural =
+func seconds*(self: Score): Natural =
   return self.seconds
 
-proc defeatedPokemons*(self: Score): seq[Pokemon] =
+func defeatedPokemons*(self: Score): seq[Pokemon] =
   return self.defeatedPokemons
 
-proc incCorrests*(self: Score) =
+proc addDefeatedPokemon*(self: Score, pokemon: Pokemon) =
+  self.defeatedPokemons.add(pokemon)
+
+proc incCorrects*(self: Score) =
   self.corrects += 1
   self.keypresses += 1
 
-proc decCorrests*(self: Score) =
+proc decCorrects*(self: Score) =
   self.corrects -= 1
   self.keypresses -= 1
 
