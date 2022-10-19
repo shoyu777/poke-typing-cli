@@ -1,6 +1,8 @@
 import 
   std/strutils,
   std/times,
+  std/options,
+  std/nre,
   pokemon,
   score,
   ../util/utils,
@@ -72,21 +74,28 @@ proc elapsedSeconds*(self: GameState): int =
   else:
     return 0
 
-proc isIgnoreKey(key: string): bool =
-  return false # TODO: impl
+func noLocal*(self: GameState): bool =
+  return self.currentLocalText == ""
+
+func isIgnoreKey(key: string): bool =
+  # *は除外した半角英数記号以外
+  return key.match(re"^[a-zA-Z0-9 -)+-/:-@¥[-`{-~]*$").isNone
+
+func isCancelKey(key: string): bool =
+  return key == $KEYCODE.CTRL_C or key == $KEYCODE.ESCAPE
+
+func isBackKey(key: string): bool =
+  return key == $KEYCODE.BACKSPACE
 
 proc updateGameState*(self: GameState, key: string) =
-  if isIgnoreKey(key): return
-
   if not self.isStarted:
     self.isStarted = true
     self.startedAt = now()
 
-  case key:
-  of $KEYCODE.CTRL_C, $KEYCODE.ESCAPE:
+  if isCancelKey(key):
     self.isCanceled = true
     return
-  of $KEYCODE.BACKSPACE:
+  elif isBackKey(key):
     if self.wroteText.len > 0:
       if self.internalResult[^1] == 'T':
         self.score.decCorrects
@@ -99,7 +108,10 @@ proc updateGameState*(self: GameState, key: string) =
       else:
         self.resultText = self.resultText[0 .. ^11]
       self.cursor -= 1
+  elif isIgnoreKey(key):
+    return
   else:
+    # 正しいキーを入力したかのジャッジ
     if key == $self.currentTextForJudge[self.cursor]:
       self.score.incCorrects
       self.resultText.add($COLORS.BG_GREEN)
@@ -108,6 +120,7 @@ proc updateGameState*(self: GameState, key: string) =
       self.score.incWrongs
       self.resultText.add($COLORS.BG_RED)
       self.internalResult.add("F")
+    # 現在のカーソルが*だった場合には*を付与
     if self.currentText[self.cursor] == '*':
       self.resultText.add(" " & $COLORS.RESET & '*')
       self.wroteText.add("*")

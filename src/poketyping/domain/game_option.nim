@@ -1,16 +1,12 @@
-import value_objects
-
 type GameOption* = ref object
-  numOfPokemon: NumOfPokemon
-  lang: Language
+  numOfPokemon: Natural
+  lang: string
 
 func newGameOption*(num: int, sub: string): GameOption =
-  let numOfPokemon = newNumOfPokemon(num)
-  let lang = newLanguage(sub)
-  return GameOption(numOfPokemon: numOfPokemon, lang: lang)
+  return GameOption(numOfPokemon: num, lang: sub)
 
-func numOfPokemon*(self: GameOption): NumOfPokemon =
+func numOfPokemon*(self: GameOption): Natural =
   return self.numOfPokemon
 
-func lang*(self: GameOption): Language =
+func lang*(self: GameOption): string =
   return self.lang

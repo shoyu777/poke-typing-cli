@@ -1,7 +1,8 @@
-import std/strutils
-import widget
-import widget_util
-import wcwidth
+import
+  std/strutils,
+  widget,
+  widget_util,
+  wcwidth
 
 type TextAreaWidget = ref object of Widget
   text: string

@@ -1,7 +1,8 @@
-import ../../util/constants
-import std/json
-import std/sequtils
-import std/strutils
+import
+  ../util/constants,
+  std/json,
+  std/sequtils,
+  std/strutils
 
 func sanitize*(text: string): string =
   result = text
@@ -23,12 +24,11 @@ func wordWrap*(text: string, lineWidth: int = 70): string =
 proc getMostWorldWideVersion*(jsonNode: JsonNode): string =
   # 対応言語が最大のバージョンを探す
   var maxCount = 0
-  var maxVersion = ""
   for version in POKEMON_VERSIONS:
     let count = jsonNode["flavor_text_entries"].filterIt(it["version"]["name"].getStr() == version).len
     if count >= maxCount:
       maxCount = count
-      maxVersion = version
+      result = version
 
 proc getFlavorText*(jsonNode: JsonNode, version: string, lang: string = "en"): string =
   let localFlavorTexts: seq[JsonNode] = jsonNode["flavor_text_entries"].filterIt(it["version"]["name"].getStr() == version and it["language"]["name"].getStr() == lang)

@@ -1,7 +1,8 @@
-import std/strutils
-import std/terminal
-import widget
-import widget_util
+import
+  std/strutils,
+  std/terminal,
+  widget,
+  widget_util
 
 type FrameTopWidget* = ref object of Widget
   totalPokemon: int

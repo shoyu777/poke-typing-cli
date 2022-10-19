@@ -1,6 +1,7 @@
-import std/strutils
-import widget
-import widget_util
+import
+  std/strutils,
+  widget,
+  widget_util
 
 type BorderWidget = ref object of Widget
   hidden: bool

@@ -1,38 +1,49 @@
-import ../widget/widget
-import ../widget/pure_text_widget
-import ../widget/column_widget
-import ../widget/frame_top_widget
-import ../widget/text_area_widget
-import ../widget/border_widget
-import ../widget/frame_bottom_widget
-import ../../domain/game_state
+import
+  ../widget/widget,
+  ../widget/pure_text_widget,
+  ../widget/column_widget,
+  ../widget/frame_top_widget,
+  ../widget/text_area_widget,
+  ../widget/border_widget,
+  ../widget/frame_bottom_widget,
+  ../widget/cursor_widget,
+  ../../domain/game_state,
+  std/strutils,
+  std/unicode
+
+const baseCursorPosX = 2
+const baseCursorPosY = 9
 
 type TypingScreen = ref object of Widget
-  child: Widget
   gameState: GameState
 
 func newTypingScreen*(gs: GameState): TypingScreen =
-  return TypingScreen(
-    child: newColumnWidget(
-      children = @[
-        new Widget,
-        newPureTextWidget(text = "Type first character to Start!\n"),
-        newPureTextWidget(text = "[CTRL-C] or [ESC] to exit.\n"),
-        newFrameTopWidget(totalPokemon = 3, remainingPokemon = 2),
-        newTextAreaWidget(text = "alksdjfalsdfa"),
-        newBorderWidget(),
-        newTextAreaWidget(text = "alksdjfalsdfa", row = 4),
-        newBorderWidget(hidden = true),
-        newTextAreaWidget(text = "alksdjfalsdfa", row = 4, hidden = true),
-        newFrameBottomWidget(),
-      ]
-    ),
-    gameState: gs
-  )
+  return TypingScreen(gameState: gs)
+
+proc buildScreen(self: TypingScreen): Widget =
+  let cursorOffset = if self.gameState.noLocal: 0 else: 4
+  return newColumnWidget(
+            children = @[
+              new Widget,
+              newPureTextWidget(text = "Type first character to Start! [CTRL-C] or [ESC] to exit."),
+              newFrameTopWidget(totalPokemon = self.gameState.initialRemainingPartyCount, remainingPokemon = self.gameState.remainingParty.len),
+              newTextAreaWidget(text = self.gameState.currentPokemonName),
+              newBorderWidget(),
+              newTextAreaWidget(text = self.gameState.resultText & self.gameState.currentText[self.gameState.cursor .. ^1], row = 4),
+              newBorderWidget(hidden = self.gameState.noLocal),
+              newTextAreaWidget(text = self.gameState.currentLocalText, row = 3, hidden = self.gameState.noLocal),
+              newBorderWidget(),
+              newTextAreaWidget(text = self.gameState.wroteText.split('*')[^1]),
+              newFrameBottomWidget(),
+              newCursorWidget(posX = baseCursorPosX + self.gameState.wroteText.split('*')[^1].runeLen, posY = baseCursorPosY + cursorOffset )
+            ]
+          )
 
 method render*(self: TypingScreen) =
-  self.child.render
+  self.screenReset()
+  self.buildScreen.render
 
 proc update*(self: TypingScreen, gs: GameState) =
   self.gameState = gs
+  self.screenReset()
   self.render

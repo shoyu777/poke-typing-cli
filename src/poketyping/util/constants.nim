@@ -11,6 +11,7 @@ type COLORS* {.pure.} = enum
 type ERROR_MSGS* {.pure.} = enum
   ARG_ERR = "\n== Argument Error ==\n"
   NUM_ERR = "Num of Pokemon must be between 1 and 6."
+  SUB_ERR = "Subtitle must be one of ja, ko, fr" # TODO: 対応言語入れる
 
 const POKE_API_URL* = "https://pokeapi.co/api/v2/pokemon-species/"
 

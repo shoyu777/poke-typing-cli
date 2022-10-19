@@ -1,9 +1,10 @@
-import ../../domain/score
-import ../../domain/pokemon
-import widget
-import std/strutils
-import wcwidth
-import widget_util
+import
+  ../../domain/score,
+  ../../domain/pokemon,
+  widget,
+  std/strutils,
+  wcwidth,
+  widget_util
 
 const defaultLeftColWidth = 40
 

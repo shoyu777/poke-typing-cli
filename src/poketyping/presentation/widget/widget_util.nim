@@ -1,5 +1,6 @@
-import std/strutils
-import ../../util/constants
+import
+  std/strutils,
+  ../../util/constants
 
 const DEFAULT_SCREEN_WIDTH* = 75
 
