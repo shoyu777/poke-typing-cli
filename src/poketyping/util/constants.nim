@@ -23,7 +23,8 @@ const REPLACE_WORDS* = @[
   ["POKéMON", "Pokemon"],
   ["é", "e"],
   ["—", "-"],
-  ["’", "'"]
+  ["’", "'"],
+  ["“", $'"']
 ]
 
 const SUPPORTED_SUB_LANGUAGE* = @[
