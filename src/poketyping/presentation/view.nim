@@ -25,5 +25,5 @@ proc render*(self: GameView) =
     let resultScreen = newResultScreen(self.useCase.gameState)
     resultScreen.render
   else:
-    # GameOver
+    # Game Canceled.
     typingScreen.screenReset()

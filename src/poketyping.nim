@@ -29,6 +29,6 @@ when isMainModule:
     help={
       "help": "print this poketyping help",
       "num": "Nums of Pokemons(1 to 6). Default 6.",
-      "sub": "Choose subtitles if you need.(only ja, fn, ch)",
+      "sub": "Choose subtitle if you need.(only ja, fn, ch)",
     }
   )
