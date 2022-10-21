@@ -7,6 +7,14 @@ type Score* = ref object
   seconds: Natural
   defeatedPokemons: seq[Pokemon]
 
+func newScore*(corrects: Natural, wrongs: Natural, keypresses: Natural, seconds: Natural, defeatedPokemons: seq[Pokemon]): Score =
+  new result
+  result.corrects = corrects
+  result.wrongs = wrongs
+  result.keypresses = keypresses
+  result.seconds = seconds
+  result.defeatedPokemons = defeatedPokemons
+
 func corrects*(self: Score): Natural =
   return self.corrects
 

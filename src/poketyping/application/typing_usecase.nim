@@ -13,4 +13,4 @@ proc newTypingUseCase*(gameOption: GameOption): TypingUseCase =
 proc typing*(self: TypingUseCase, key: string) =
   # ドメインロジックを記述する
   # GameStateの他にも中断処理、途中結果の保存などを入れられる
-  self.gameState.updateGameState(newKey(key))
+  self.gameState.update(newKey(key))

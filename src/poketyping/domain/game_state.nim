@@ -5,13 +5,11 @@ import
   score,
   key,
   play_status,
-  ../util/utils,
-  ../util/constants
+  ../util/utils
 
 type GameState* = ref object
   wroteText: string
-  resultText: string
-  internalResult: string
+  judgeResults: string
   cursor: Natural
   remainingParty: seq[Pokemon]
   totalPokemon: Natural
@@ -22,8 +20,7 @@ type GameState* = ref object
 proc newGameState*(party: seq[Pokemon]): GameState =
   new result
   result.wroteText = ""
-  result.resultText = ""
-  result.internalResult = ""
+  result.judgeResults = ""
   result.cursor = 0
   result.remainingParty = party
   result.totalPokemon = party.len
@@ -33,9 +30,6 @@ proc newGameState*(party: seq[Pokemon]): GameState =
 
 func wroteText*(self: GameState): string =
   return self.wroteText
-
-func resultText*(self: GameState): string =
-  return self.resultText
 
 func cursor*(self: GameState): Natural =
   return self.cursor
@@ -48,6 +42,9 @@ func status*(self: GameState): PlayStatus =
 
 func score*(self: GameState): Score =
   return self.score
+
+func judgeResults*(self: GameState): string =
+  return self.judgeResults
 
 func isNotStarted*(self: GameState): bool =
   return self.status == PlayStatus.notStarted
@@ -83,9 +80,8 @@ proc currentPokemonName*(self: GameState): string =
 proc setNextPokemon*(self: GameState) =
   self.remainingParty = self.remainingParty.drop()
   self.cursor = 0
-  self.resultText = ""
   self.wroteText = ""
-  self.internalResult = ""
+  self.judgeResults = ""
   if self.remainingParty.len == 0: self.status = PlayStatus.finished
 
 proc remainingsCount*(self: GameState): Natural =
@@ -99,7 +95,9 @@ proc elapsedSeconds*(self: GameState): int =
 func noLocal*(self: GameState): bool =
   return self.currentLocalText == ""
 
-proc updateGameState*(self: GameState, key: Key) =
+proc update*(self: GameState, key: Key) =
+  if self.isFinished: return
+
   if self.isNotStarted:
     self.status = PlayStatus.playing
     self.startedAt = now()
@@ -109,16 +107,12 @@ proc updateGameState*(self: GameState, key: Key) =
     return
   elif key.isBackKey():
     if self.wroteText.len > 0:
-      if self.internalResult[^1] == 'T':
+      if self.judgeResults[^1] == 'T':
         self.score.decCorrects
       else:
         self.score.decWrongs
       self.wroteText = self.wroteText[0 .. ^2]
-      self.internalResult = self.internalResult[0 .. ^2]
-      if self.resultText[^1] == '*':
-        self.resultText = self.resultText[0 .. ^12]
-      else:
-        self.resultText = self.resultText[0 .. ^11]
+      self.judgeResults = self.judgeResults[0 .. ^2]
       self.cursor -= 1
     return
   elif key.isIgnoreKey():
@@ -127,18 +121,14 @@ proc updateGameState*(self: GameState, key: Key) =
     # 正しいキーを入力したかのジャッジ
     if $key == $self.currentTextForJudge[self.cursor]:
       self.score.incCorrects
-      self.resultText.add($COLORS.BG_GREEN)
-      self.internalResult.add("T")
+      self.judgeResults.add("T")
     else:
       self.score.incWrongs
-      self.resultText.add($COLORS.BG_RED)
-      self.internalResult.add("F")
+      self.judgeResults.add("F")
     # 現在のカーソルが*だった場合には*を付与
     if self.currentText[self.cursor] == '*':
-      self.resultText.add(" " & $COLORS.RESET & '*')
       self.wroteText.add("*")
     else:
-      self.resultText.add(self.currentText[self.cursor] & $COLORS.RESET)
       self.wroteText.add($key)
     self.cursor = self.cursor + 1
 

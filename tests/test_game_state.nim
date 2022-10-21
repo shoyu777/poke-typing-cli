@@ -2,7 +2,9 @@ import unittest
 import
   poketyping/domain/pokemon,
   poketyping/domain/game_state,
-  poketyping/domain/score
+  poketyping/domain/key,
+  poketyping/domain/score,
+  poketyping/domain/play_status
 
 suite "gamestate":
   setup:
@@ -51,3 +53,45 @@ suite "gamestate":
     check gameState.isFinished == false
     gameState.setNextPokemon
     check gameState.isFinished == true
+
+suite "typing test":
+  setup:
+    let party: seq[Pokemon] = @[
+      newPokemon(
+        id = 1,
+        name = "hoge",
+        localName = "hoge",
+        flavorText = "one two*three",
+        localFlavorText = "テキスト"
+      ),
+    ]
+    let gameState = newGameState(party)
+  
+  test "perfect score":
+    let typedCorrectly = "one two three"
+    for str in typedCorrectly:
+      gameState.update(newKey($str))
+    check gameState.status == PlayStatus.finished
+    check gameState.score.corrects == typedCorrectly.len
+    check gameState.score.wrongs == 0
+    check gameState.score.keypresses == typedCorrectly.len
+  
+  test "all wrong score":
+    let typedWrongly = "xxxxxxxxxxxxxxxxx"
+    let expectedKeypressses = gameState.currentText.len
+    for str in typedWrongly:
+      gameState.update(newKey($str))
+    check gameState.status == PlayStatus.finished
+    check gameState.score.corrects == 0
+    check gameState.score.wrongs == expectedKeypressses
+    check gameState.score.keypresses == expectedKeypressses
+  
+  test "correct and wrong score":
+    let typedSomething = "onexxxxxxxxxxxxxx"
+    let expectedKeypressses = gameState.currentText.len
+    for str in typedSomething:
+      gameState.update(newKey($str))
+    check gameState.status == PlayStatus.finished
+    check gameState.score.corrects == "one".len
+    check gameState.score.wrongs == expectedKeypressses - "one".len
+    check gameState.score.keypresses == expectedKeypressses
