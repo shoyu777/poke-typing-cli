@@ -16,12 +16,12 @@ proc render*(self: GameView) =
   typingScreen.render
 
   var key: char
-  while not self.useCase.gameState.isAllDefeated and not self.useCase.gameState.isCanceled:
+  while not self.useCase.gameState.isFinished and not self.useCase.gameState.isCanceled:
     key = getch()
     self.useCase.typing($key)
     typingScreen.update(self.useCase.gameState)
 
-  if self.useCase.gameState.isAllDefeated:
+  if self.useCase.gameState.isFinished:
     let resultScreen = newResultScreen(self.useCase.gameState)
     resultScreen.render
   else:

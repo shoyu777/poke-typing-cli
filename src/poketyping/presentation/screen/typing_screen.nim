@@ -26,7 +26,7 @@ proc buildScreen(self: TypingScreen): Widget =
             children = @[
               new Widget,
               newPureTextWidget(text = "Type first character to Start! [CTRL-C] or [ESC] to exit."),
-              newFrameTopWidget(totalPokemon = self.gameState.initialRemainingPartyCount, remainingPokemon = self.gameState.remainingParty.len),
+              newFrameTopWidget(totalPokemon = self.gameState.totalPokemon, remainingPokemon = self.gameState.remainingsCount),
               newTextAreaWidget(text = self.gameState.currentPokemonName),
               newBorderWidget(),
               newTextAreaWidget(text = self.gameState.resultText & self.gameState.currentText[self.gameState.cursor .. ^1], row = 4),

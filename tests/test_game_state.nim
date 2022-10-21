@@ -31,12 +31,12 @@ suite "gamestate":
     gameState.setNextPokemon
     check gameState.currentText == ""
 
-  test "remainingPartyCount":
-    check gameState.remainingPartyCount == 2
+  test "remainingsCount":
+    check gameState.remainingsCount == 2
     gameState.setNextPokemon
-    check gameState.remainingPartyCount == 1
+    check gameState.remainingsCount == 1
     gameState.setNextPokemon
-    check gameState.remainingPartyCount == 0
+    check gameState.remainingsCount == 0
 
   test "currentPokemonName":
     check gameState.currentPokemonName == "No.0025 pikachu (ピカチュウ)"
@@ -45,9 +45,9 @@ suite "gamestate":
     gameState.setNextPokemon
     check gameState.currentPokemonName == ""
   
-  test "isAllDefeated":
-    check gameState.isAllDefeated == false
+  test "isFinished":
+    check gameState.isFinished == false
     gameState.setNextPokemon
-    check gameState.isAllDefeated == false
+    check gameState.isFinished == false
     gameState.setNextPokemon
-    check gameState.isAllDefeated == true
+    check gameState.isFinished == true

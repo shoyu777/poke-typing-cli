@@ -5,6 +5,7 @@ import
   std/nre,
   pokemon,
   score,
+  play_status,
   ../util/utils,
   ../util/constants
 
@@ -14,11 +15,10 @@ type GameState* = ref object
   internalResult*: string
   cursor*: Natural
   remainingParty*: seq[Pokemon]
-  initialRemainingPartyCount*: Natural
-  isStarted*: bool
+  totalPokemon*: Natural
   startedAt*: DateTime
+  status*: PlayStatus
   score*: Score
-  isCanceled*: bool
 
 proc newGameState*(party: seq[Pokemon]): GameState =
   new result
@@ -27,11 +27,19 @@ proc newGameState*(party: seq[Pokemon]): GameState =
   result.internalResult = ""
   result.cursor = 0
   result.remainingParty = party
-  result.initialRemainingPartyCount = party.len
-  result.isStarted = false
+  result.totalPokemon = party.len
   result.startedAt = now()
   result.score = new Score
-  result.isCanceled = false
+  result.status = PlayStatus.notStarted
+
+func isNotStarted*(self: GameState): bool =
+  return self.status == PlayStatus.notStarted
+
+func isCanceled*(self: GameState): bool =
+  return self.status == PlayStatus.canceled
+
+func isFinished*(self: GameState): bool =
+  return self.status == PlayStatus.finished
 
 proc currentText*(self: GameState): string =
   if self.remainingParty.present:
@@ -61,18 +69,15 @@ proc setNextPokemon*(self: GameState) =
   self.resultText = ""
   self.wroteText = ""
   self.internalResult = ""
+  if self.remainingParty.len == 0: self.status = PlayStatus.finished
 
-proc remainingPartyCount*(self: GameState): Natural =
+proc remainingsCount*(self: GameState): Natural =
   return self.remainingParty.len
 
-func isAllDefeated*(self: GameState): bool =
-  return self.remainingPartyCount == 0
-
 proc elapsedSeconds*(self: GameState): int =
-  if self.isStarted:
-    return (now() - self.startedAt).inSeconds.int
-  else:
-    return 0
+  if self.isNotStarted: return 0
+
+  return (now() - self.startedAt).inSeconds.int
 
 func noLocal*(self: GameState): bool =
   return self.currentLocalText == ""
@@ -88,12 +93,12 @@ func isBackKey(key: string): bool =
   return key == $KEYCODE.BACKSPACE
 
 proc updateGameState*(self: GameState, key: string) =
-  if not self.isStarted:
-    self.isStarted = true
+  if self.isNotStarted:
+    self.status = PlayStatus.playing
     self.startedAt = now()
 
   if isCancelKey(key):
-    self.isCanceled = true
+    self.status = PlayStatus.canceled
     return
   elif isBackKey(key):
     if self.wroteText.len > 0:
@@ -108,6 +113,7 @@ proc updateGameState*(self: GameState, key: string) =
       else:
         self.resultText = self.resultText[0 .. ^11]
       self.cursor -= 1
+    return
   elif isIgnoreKey(key):
     return
   else:
@@ -128,6 +134,7 @@ proc updateGameState*(self: GameState, key: string) =
       self.resultText.add(self.currentText[self.cursor] & $COLORS.RESET)
       self.wroteText.add(key)
     self.cursor = self.cursor + 1
+
   if self.cursor == self.currentText.len:
     self.score.addDefeatedPokemon(self.remainingParty.first)
     self.setNextPokemon()
