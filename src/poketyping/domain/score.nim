@@ -27,6 +27,9 @@ func keypresses*(self: Score): Natural =
 func seconds*(self: Score): Natural =
   return self.seconds
 
+func setSeconds*(self: Score, seconds: Natural) =
+  self.seconds = seconds
+
 func defeatedPokemons*(self: Score): seq[Pokemon] =
   return self.defeatedPokemons
 

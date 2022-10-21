@@ -18,7 +18,7 @@ func scoreLeftCol(self: ScoreWidget): array[7, string] =
   result[0] = "Defeated Pokemon:" & " ".repeat(defaultLeftColWidth - 15)
   for idx in 0 .. 5:
     if self.score.defeatedPokemons.len > idx:
-      result[idx + 1] = "  " & self.score.defeatedPokemons[idx].name & " ".repeat(defaultLeftColWidth - self.score.defeatedPokemons[idx].name.wcswidth)
+      result[idx + 1] = "  " & self.score.defeatedPokemons[idx].fullName & " ".repeat(defaultLeftColWidth - self.score.defeatedPokemons[idx].fullName.wcswidth)
     else:
       result[idx + 1] = "  " & " ".repeat(defaultLeftColWidth)
 

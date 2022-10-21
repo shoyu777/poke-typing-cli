@@ -77,13 +77,6 @@ proc currentPokemonName*(self: GameState): string =
   if self.remainingParty.present:
     return self.remainingParty.first.fullName
 
-proc setNextPokemon*(self: GameState) =
-  self.remainingParty = self.remainingParty.drop()
-  self.cursor = 0
-  self.wroteText = ""
-  self.judgeResults = ""
-  if self.remainingParty.len == 0: self.status = PlayStatus.finished
-
 proc remainingsCount*(self: GameState): Natural =
   return self.remainingParty.len
 
@@ -94,6 +87,15 @@ proc elapsedSeconds*(self: GameState): int =
 
 func noLocal*(self: GameState): bool =
   return self.currentLocalText == ""
+
+proc setNextPokemon*(self: GameState) =
+  self.remainingParty = self.remainingParty.drop()
+  self.cursor = 0
+  self.wroteText = ""
+  self.judgeResults = ""
+  if self.remainingParty.len == 0:
+    self.status = PlayStatus.finished
+    self.score.setSeconds(self.elapsedSeconds)
 
 proc update*(self: GameState, key: Key) =
   if self.isFinished: return

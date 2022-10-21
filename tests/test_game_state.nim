@@ -4,7 +4,8 @@ import
   poketyping/domain/game_state,
   poketyping/domain/key,
   poketyping/domain/score,
-  poketyping/domain/play_status
+  poketyping/domain/play_status,
+  poketyping/util/utils
 
 suite "gamestate":
   setup:
@@ -75,6 +76,7 @@ suite "typing test":
     check gameState.score.corrects == typedCorrectly.len
     check gameState.score.wrongs == 0
     check gameState.score.keypresses == typedCorrectly.len
+    check gameState.score.defeatedPokemons.first.fullName == "No.0001 hoge (hoge)"
   
   test "all wrong score":
     let typedWrongly = "xxxxxxxxxxxxxxxxx"

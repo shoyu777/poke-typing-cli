@@ -11,7 +11,7 @@ type COLORS* {.pure.} = enum
 type ERROR_MSGS* {.pure.} = enum
   ARG_ERR = "\n== Argument Error ==\n"
   NUM_ERR = "Num of Pokemon must be between 1 and 6."
-  SUB_ERR = "Subtitle must be one of ja, ko, fr" # TODO: 対応言語入れる
+  SUB_ERR = "Subtitle must be one of "
 
 const POKE_API_URL* = "https://pokeapi.co/api/v2/pokemon-species/"
 
@@ -29,10 +29,15 @@ const REPLACE_WORDS* = @[
 ]
 
 const SUPPORTED_SUB_LANGUAGE* = @[
-  "ja",
-  "fr",
-  "ko",
-  # TODO: 中国語確認
+  "ja",      # 日本語
+  "fr",      # フランス語
+  "ko",      # 韓国語 Korean
+  "de",      # ドイツ語 German
+  "zh-Hans", # 中国語(簡体字) Chinese
+  "zh-Hant", # 中国語(繁体字) Chinese
+  "es",      # スペイン語 Spanish
+  "it",      # イタリア語 Italian
+  "cs",      # チェコ語 Czech
 ]
 
 const POKEMON_VERSIONS* = @[
