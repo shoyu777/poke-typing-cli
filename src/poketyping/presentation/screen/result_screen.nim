@@ -20,7 +20,7 @@ proc buildScreen(self: ResultScreen): Widget =
             children = @[
               new Widget,
               newPureTextWidget(text = "[CTRL-C] or [ESC] to exit."),
-              newFrameTopWidget(totalPokemon = self.gameState.totalPokemon, remainingPokemon = self.gameState.remainingParty.len),
+              newFrameTopWidget(totalPokemon = self.gameState.totalPokemon, remainingPokemon = self.gameState.remainingsCount),
               newTextAreaWidget(text = "YOU WIN!!"),
               newBorderWidget(),
               newScoreWidget(score = self.gameState.score),

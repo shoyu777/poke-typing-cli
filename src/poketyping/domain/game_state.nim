@@ -1,24 +1,23 @@
 import 
   std/strutils,
   std/times,
-  std/options,
-  std/nre,
   pokemon,
   score,
+  key,
   play_status,
   ../util/utils,
   ../util/constants
 
 type GameState* = ref object
-  wroteText*: string
-  resultText*: string
-  internalResult*: string
-  cursor*: Natural
-  remainingParty*: seq[Pokemon]
-  totalPokemon*: Natural
-  startedAt*: DateTime
-  status*: PlayStatus
-  score*: Score
+  wroteText: string
+  resultText: string
+  internalResult: string
+  cursor: Natural
+  remainingParty: seq[Pokemon]
+  totalPokemon: Natural
+  startedAt: DateTime
+  status: PlayStatus
+  score: Score
 
 proc newGameState*(party: seq[Pokemon]): GameState =
   new result
@@ -31,6 +30,24 @@ proc newGameState*(party: seq[Pokemon]): GameState =
   result.startedAt = now()
   result.score = new Score
   result.status = PlayStatus.notStarted
+
+func wroteText*(self: GameState): string =
+  return self.wroteText
+
+func resultText*(self: GameState): string =
+  return self.resultText
+
+func cursor*(self: GameState): Natural =
+  return self.cursor
+
+func totalPokemon*(self: GameState): Natural =
+  return self.totalPokemon
+
+func status*(self: GameState): PlayStatus =
+  return self.status
+
+func score*(self: GameState): Score =
+  return self.score
 
 func isNotStarted*(self: GameState): bool =
   return self.status == PlayStatus.notStarted
@@ -82,25 +99,15 @@ proc elapsedSeconds*(self: GameState): int =
 func noLocal*(self: GameState): bool =
   return self.currentLocalText == ""
 
-func isIgnoreKey(key: string): bool =
-  # *は除外した半角英数記号以外
-  return key.match(re"^[a-zA-Z0-9 -)+-/:-@¥[-`{-~]*$").isNone
-
-func isCancelKey(key: string): bool =
-  return key == $KEYCODE.CTRL_C or key == $KEYCODE.ESCAPE
-
-func isBackKey(key: string): bool =
-  return key == $KEYCODE.BACKSPACE
-
-proc updateGameState*(self: GameState, key: string) =
+proc updateGameState*(self: GameState, key: Key) =
   if self.isNotStarted:
     self.status = PlayStatus.playing
     self.startedAt = now()
 
-  if isCancelKey(key):
+  if key.isCancelKey():
     self.status = PlayStatus.canceled
     return
-  elif isBackKey(key):
+  elif key.isBackKey():
     if self.wroteText.len > 0:
       if self.internalResult[^1] == 'T':
         self.score.decCorrects
@@ -114,11 +121,11 @@ proc updateGameState*(self: GameState, key: string) =
         self.resultText = self.resultText[0 .. ^11]
       self.cursor -= 1
     return
-  elif isIgnoreKey(key):
+  elif key.isIgnoreKey():
     return
   else:
     # 正しいキーを入力したかのジャッジ
-    if key == $self.currentTextForJudge[self.cursor]:
+    if $key == $self.currentTextForJudge[self.cursor]:
       self.score.incCorrects
       self.resultText.add($COLORS.BG_GREEN)
       self.internalResult.add("T")
@@ -132,7 +139,7 @@ proc updateGameState*(self: GameState, key: string) =
       self.wroteText.add("*")
     else:
       self.resultText.add(self.currentText[self.cursor] & $COLORS.RESET)
-      self.wroteText.add(key)
+      self.wroteText.add($key)
     self.cursor = self.cursor + 1
 
   if self.cursor == self.currentText.len:

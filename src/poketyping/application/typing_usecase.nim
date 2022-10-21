@@ -1,5 +1,5 @@
 
-import ../domain/[game_option, game_state, pokemon]
+import ../domain/[game_option, game_state, pokemon, key]
 import ../di_container
 
 type TypingUseCase* = ref object
@@ -13,4 +13,4 @@ proc newTypingUseCase*(gameOption: GameOption): TypingUseCase =
 proc typing*(self: TypingUseCase, key: string) =
   # ドメインロジックを記述する
   # GameStateの他にも中断処理、途中結果の保存などを入れられる
-  self.gameState.updateGameState(key)
+  self.gameState.updateGameState(newKey(key))
