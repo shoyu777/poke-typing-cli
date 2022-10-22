@@ -23,7 +23,7 @@ It must be from 1 to 6.
 ./bin/poketyping -n 3
 ```
 
-### -s [language code]
+### -l [language code]
 
 Subtitle is shown during typing.
 
@@ -45,7 +45,7 @@ const SUPPORTED_SUB_LANGUAGE* = @[
 
 ```bash
 # example
-./bin/poketyping -s ja
+./bin/poketyping -l ja
 ```
 
 # License
