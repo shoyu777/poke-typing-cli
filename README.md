@@ -9,6 +9,9 @@
 # Usage
 ```bash
 ./poketyping [optional-params]
+
+# example
+./bin/poketyping -n 3 -l ja
 ```
 
 ## Options
