@@ -3,3 +3,4 @@ bin/*
 *.exe
 *.backup
 /dist/
+/tests/test

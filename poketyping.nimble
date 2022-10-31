@@ -15,6 +15,7 @@ bin           = @["poketyping"]
 requires "nim >= 1.6.8"
 requires "cligen >= 1.5.28"
 requires "wcwidth >= 0.1.3"
+requires "interface_implements >= 0.2.3"
 
 # tasks
 import strformat
