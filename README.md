@@ -11,7 +11,7 @@
 ./poketyping [optional-params]
 
 # example
-./bin/poketyping -n 3 -l ja
+./poketyping -n 3 -l ja
 ```
 
 ## Options
@@ -23,7 +23,7 @@ It must be from 1 to 6.
 
 ```bash
 # example
-./bin/poketyping -n 3
+./poketyping -n 3
 ```
 
 ### -l [language code]
@@ -48,7 +48,7 @@ const SUPPORTED_SUB_LANGUAGE* = @[
 
 ```bash
 # example
-./bin/poketyping -l ja
+./poketyping -l ja
 ```
 
 # License
