@@ -5,7 +5,15 @@
 - Pokémon data is collected from [PokéAPI](https://pokeapi.co/)
 
 # Demo
+![poketyping_demo](https://user-images.githubusercontent.com/7047398/204245889-762d7af6-1393-44f9-a0d5-26548a4eb5ae.gif)
+# Install
+Build by yourself
+- git clone this repository
+- install nim
+- `nimble build` at project root
+- use `/bin/poketyping`
 
+You can also use release build package from release page. You may need to permit this binary file after download.
 # Usage
 ```bash
 ./poketyping [optional-params]
