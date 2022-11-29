@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.1.0"
+version       = "0.1.1"
 author        = "shoyu777"
 description   = "Typing Plactice App with Pokemon."
 license       = "MIT"

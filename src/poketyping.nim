@@ -6,7 +6,7 @@ import
   cligen
 
 # cligen setting
-clCfg.version = "0.1.0"
+clCfg.version = "0.1.1"
 clCfg.helpSyntax = ""
 
 proc poketyping(num: int = 6, lang: string = "") =
