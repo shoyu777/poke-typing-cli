@@ -13,7 +13,7 @@ Build by yourself
 - `nimble build` at project root
 - use `/bin/poketyping`
 
-You can also use release build package from release page. You may need to permit this binary file after download.
+You can also use release build package from release page. You may need to permit this binary file for execution after download.
 # Usage
 ```bash
 ./poketyping [optional-params]
