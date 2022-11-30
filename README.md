@@ -3,17 +3,25 @@
 - This is a typing plactice app on CLI with Pokemon.
 - Built with Nim.
 - Pokémon data is collected from [PokéAPI](https://pokeapi.co/)
+- Windows console not supported. Please use Docker instead.
 
 # Demo
 ![poketyping_demo](https://user-images.githubusercontent.com/7047398/204245889-762d7af6-1393-44f9-a0d5-26548a4eb5ae.gif)
 # Install
+Build and Run by Docker
+- git clone this repository
+- `docker pull nimlang/nim`
+- `cd poke-typing-cli`
+- ```docker run --platform linux/x86_64 --rm -v `pwd`:/usr/src/app -w /usr/src/app -i -t nimlang/nim nimble build -y```
+- ```docker run --platform linux/x86_64 --rm -v `pwd`:/usr/src/app -w /usr/src/app -i -t nimlang/nim ./bin/poketyping -n 3 -l ja```
+
 Build by yourself
 - git clone this repository
 - install nim
 - `nimble build` at project root
 - use `/bin/poketyping`
 
-You can also use release build package from release page. You may need to permit this binary file for execution after download.
+You can also use release build package from release page(Mac OS only). You may need to permit this binary file for execution after download.
 # Usage
 ```bash
 ./poketyping [optional-params]
