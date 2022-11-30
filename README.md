@@ -6,7 +6,7 @@
 - Windows console not supported. Please use Docker instead.
 
 # Demo
-![poketyping_demo](https://user-images.githubusercontent.com/7047398/204245889-762d7af6-1393-44f9-a0d5-26548a4eb5ae.gif)
+![poketyping_demo](https://user-images.githubusercontent.com/7047398/204686391-281d1531-2e6b-4ada-8436-bb215f8f23a9.gif)
 # Install
 Build and Run by Docker
 - git clone this repository
