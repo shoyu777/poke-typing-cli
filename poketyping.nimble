@@ -2,7 +2,7 @@
 
 version       = "0.1.1"
 author        = "shoyu777"
-description   = "Typing Plactice App with Pokemon."
+description   = "Typing Practice App with Pokemon."
 license       = "MIT"
 srcDir        = "src"
 binDir        = "bin"
