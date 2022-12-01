@@ -33,7 +33,7 @@ You can also use release build package from release page(Mac OS only). You may n
 ## Options
 ### -n [int]
 
-The number of Pokemon you want to buttle with.
+The number of Pokemon you want to battle with.
 
 It must be from 1 to 6.
 
