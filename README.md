@@ -1,9 +1,9 @@
-# Typing plactice with Pokémon on your terminal.
+# Typing practice with Pokémon on your terminal.
 
-- This is a typing plactice app on CLI with Pokemon.
+- This is a typing practice app on CLI with Pokemon.
 - Built with Nim.
 - Pokémon data is collected from [PokéAPI](https://pokeapi.co/)
-- Windows console not supported. Please use Docker instead.
+- Windows console is not supported. Please use Docker instead.
 
 # Demo
 ![poketyping_demo](https://user-images.githubusercontent.com/7047398/204686391-281d1531-2e6b-4ada-8436-bb215f8f23a9.gif)
